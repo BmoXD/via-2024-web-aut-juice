@@ -10,10 +10,10 @@ describe("Juice-shop scenarios", () => {
 
     it("Login", () => {
         // Click the "Account" button
-        cy.contains('button', 'Account').click();
+        cy.get('#navbarAccount').click();
     
         // Click the "Login" button
-        cy.contains('button', 'Login').click();
+        cy.get('#navbarLoginButton').click();
     
         // Set email value to "demo"
         cy.get('#email').type("demo");
@@ -22,10 +22,10 @@ describe("Juice-shop scenarios", () => {
         cy.get('#password').type("demo");
     
         // Click the "Log in" button
-        cy.contains('button', 'Log in').click();
+        cy.get('#loginButton').click();
     
         // Click the "Account" button again to ensure login status
-        cy.contains('button', 'Account').click();
+        cy.get('#navbarAccount').click();
     
         // Validate that "demo" account name appears in the menu section
         cy.contains('.mat-menu-content', 'demo').should('be.visible');
@@ -33,21 +33,54 @@ describe("Juice-shop scenarios", () => {
 
     it("Registration", () => {
       // Click Account button
+      cy.get('#navbarAccount').click();
+
       // Login button
+      cy.get('#navbarLoginButton').click();
+
       // Click "Not yet a customer?"
+      cy.get('a[routerlink="/register"].primary-link').click();
+      
       // Find - how to generate random number in JS
       // Use that number to genarate unique email address, e.g.: email_7584@ebox.com
       // Save that email address to some variable
+      // Generate a random number between 1000 and 9999
+      const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+      const emailAddress = `email_${randomNumber}@example.com`;
+      cy.get('#emailControl').type(emailAddress);
+
       // Fill in password field and repeat password field with same password
+      cy.get('#passwordControl').type("Abcd123!");
+      cy.get('#repeatPasswordControl').type("Abcd123!");
+      
       // Click on Security Question menu
+      cy.get('mat-select[aria-label="Selection list for the security question"]').click();
+
       // Select  "Name of your favorite pet?"
+      cy.contains('mat-option', 'Name of your favorite pet?').click();
+
       // Fill in answer
+      cy.get('#securityAnswerControl').type('Rufus');
+
       // Click Register button
+      cy.get('#registerButton').click();
+
+      cy.get('#navbarAccount').click();
+      cy.get('#navbarLoginButton').click();
+      
       // Set email value to previously created email
+      cy.get('#email').type(emailAddress);
+  
       // Set password value to previously used password value
+      cy.get('#password').type("Abcd123!");
+
       // Click login button
+      cy.get('#loginButton').click();
+
       // Click Account button
+      cy.get('#navbarAccount').click();
       // Validate that account name (with previously created email address) appears in the menu section
+      cy.contains('.mat-menu-content', emailAddress).should('be.visible');
     });
   });
 
