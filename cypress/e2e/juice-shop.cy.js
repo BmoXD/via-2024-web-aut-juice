@@ -9,13 +9,26 @@ describe("Juice-shop scenarios", () => {
     });
 
     it("Login", () => {
-      // Click Account button
-      // Click Login button
-      // Set email value to "demo"
-      // Set password value to "demo"
-      // Click Log in
-      // Click Account button
-      // Validate that "demo" account name appears in the menu section
+        // Click the "Account" button
+        cy.contains('button', 'Account').click();
+    
+        // Click the "Login" button
+        cy.contains('button', 'Login').click();
+    
+        // Set email value to "demo"
+        cy.get('#email').type("demo");
+    
+        // Set password value to "demo"
+        cy.get('#password').type("demo");
+    
+        // Click the "Log in" button
+        cy.contains('button', 'Log in').click();
+    
+        // Click the "Account" button again to ensure login status
+        cy.contains('button', 'Account').click();
+    
+        // Validate that "demo" account name appears in the menu section
+        cy.contains('.mat-menu-content', 'demo').should('be.visible');
     });
 
     it("Registration", () => {
